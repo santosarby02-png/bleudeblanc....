@@ -1,0 +1,52 @@
+-- =========================
+-- bleuOrders
+-- =========================
+CREATE TABLE bleuOrders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    bleu_BuyerName VARCHAR(100),
+    bleu_ProductName VARCHAR(100),
+    bleu_ProductPrice DECIMAL(10,2),
+    bleu_Quantity INT,
+    bleu_TotalPrice DECIMAL(10,2),
+    bleu_Account VARCHAR(100)
+);
+
+-- =========================
+-- bleuProducts
+-- =========================
+CREATE TABLE bleuProducts (
+    bleu_ID INT AUTO_INCREMENT PRIMARY KEY,
+    bleu_ProductName VARCHAR(150),
+    bleu_Unit VARCHAR(50),
+    bleu_PriceperUnit DECIMAL(10,2),
+    bleu_Image LONGBLOB
+);
+
+-- Rename primary key column (optional but kept from your logic)
+ALTER TABLE bleuProducts 
+CHANGE COLUMN bleu_ID bleuprodid INT;
+
+ALTER TABLE bleuProducts 
+MODIFY bleuprodid INT(11) NOT NULL AUTO_INCREMENT;
+
+-- =========================
+-- Admin / Client Logic
+-- =========================
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin','client') NOT NULL,
+    fname VARCHAR(100),
+    lname VARCHAR(100),
+    email VARCHAR(150),
+    status TINYINT(1) DEFAULT 0   -- 0 = pending, 1 = approved
+);
+
+-- =========================
+-- Hardcoded Admin Account
+-- =========================
+-- username: admin
+-- password: Admin123 (HASH THIS IN PRODUCTION)
+INSERT INTO users (username, password, role, fname, lname, email, status)
+VALUES ('admin', 'Admin123', 'admin', 'Admin', 'User', 'admin@example.com', 1);
