@@ -11,58 +11,40 @@ body {
     margin: 0;
     padding: 20px;
     font-family: "Georgia", serif;
-    background-color: #f7f2e8;
-
+    background-color: #fff;
+    color: #000;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    align-items: center;
 }
 
 a {
     text-decoration: none;
 }
 
-/* Buttons */
-.adminbtn,
+.adminbtn, 
 .bleulogout {
     width: 90%;
     max-width: 250px;
     padding: 12px 20px;
-
     font-size: 1rem;
     letter-spacing: 1px;
-    font-family: "Georgia", serif;
-
-    border: none;
-    border-radius: 8px;
+    border: 2px solid #000;
     cursor: pointer;
-    display: block;
-    margin: 0 auto;
+    border-radius: 8px;
+    font-family: "Georgia", serif;
+    background-color: #fff;
+    color: #000;
     transition: 0.3s ease;
+    display: block;
+    text-align: center;
 }
 
-/* Main buttons */
-.adminbtn {
-    background: #c7a57a;
-    color: #3b2c20;
-    border: 2px solid #8a6a48;
-}
-
-.adminbtn:hover {
-    background: #b08c62;
-    transform: translateX(5px);
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
-}
-
-/* Logout button */
-.bleulogout {
-    background: #a0574c;
-    color: #fff;
-    border: 2px solid #7a3d33;
-}
-
+.adminbtn:hover, 
 .bleulogout:hover {
-    background: #8d4a40;
+    background-color: #000;
+    color: #fff;
     transform: translateX(5px);
     box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
 }
