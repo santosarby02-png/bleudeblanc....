@@ -1,72 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Client Dashboard</title>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bleuStyle_1.css">
+    <title>Document</title>
+
+    <style>
 body {
     margin: 0;
     padding: 20px;
     font-family: "Georgia", serif;
-    background-color: #000;
-    color: #fff;
+    background-color: #f7f2e8;
+
     display: flex;
     flex-direction: column;
     gap: 15px;
-    align-items: center;
 }
 
 a {
     text-decoration: none;
 }
 
-.adminbtn, 
+/* Buttons */
+.adminbtn,
 .bleulogout {
     width: 90%;
     max-width: 250px;
     padding: 12px 20px;
+
     font-size: 1rem;
     letter-spacing: 1px;
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
     font-family: "Georgia", serif;
+
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
     display: block;
-    transition: 0.3s ease;
-    text-align: center;
     margin: 0 auto;
+    transition: 0.3s ease;
 }
 
-/* Admin buttons */
+/* Main buttons */
 .adminbtn {
-    background: #000;
-    color: #fff;
-    border: 2px solid #fff;
+    background: #c7a57a;
+    color: #3b2c20;
+    border: 2px solid #8a6a48;
 }
 
 .adminbtn:hover {
-    background: #fff;
-    color: #000;
+    background: #b08c62;
     transform: translateX(5px);
-    box-shadow: 2px 2px 5px rgba(255,255,255,0.25);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
 }
 
 /* Logout button */
 .bleulogout {
-    background: #000;
+    background: #a0574c;
     color: #fff;
-    border: 2px solid #fff;
+    border: 2px solid #7a3d33;
 }
 
 .bleulogout:hover {
-    background: #fff;
-    color: #000;
+    background: #8d4a40;
     transform: translateX(5px);
-    box-shadow: 2px 2px 5px rgba(255,255,255,0.25);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
 }
-</style>
+    </style>
 </head>
+
 <body>
 
 <a href="bleuClientProduct.php" target="mid_column">
@@ -82,9 +84,8 @@ a {
 </a>
 
 <script>
-document.getElementById("logoutLink").addEventListener("click", function(event) {
-    var confirmLogout = confirm("Are you sure you want to log out?");
-    if (!confirmLogout) {
+document.getElementById("logoutLink").addEventListener("click", function (event) {
+    if (!confirm("Are you sure you want to log out?")) {
         event.preventDefault();
     }
 });
