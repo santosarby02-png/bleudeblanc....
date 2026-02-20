@@ -20,7 +20,7 @@ body {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: right;
 }
 
 .adminbtn, 
@@ -53,11 +53,11 @@ a {
 
 <body>
 
-<a href="bleuClientProduct.php" target="mid_column">
+<a href="bleuClientProduct.php" target="column">
     <button class="adminbtn">Our Products</button>
 </a>
 
-<a href="bleuClientViewOrders.php" target="mid_column">
+<a href="bleuClientViewOrders.php" target="column">
     <button class="adminbtn">View Orders</button>
 </a>
 
