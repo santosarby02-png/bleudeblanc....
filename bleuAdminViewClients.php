@@ -5,13 +5,13 @@ if (session_status() === PHP_SESSION_NONE) {
 
 include "bleuConnection.php";
 
-// Ensure only admins can view
+// Ensure only admins
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header("Location: bleuLogin.php");
     exit;
 }
 
-// Get all clients
+// Get all clients (including pending & approved)
 $bleusql = "SELECT * FROM users WHERE role = 'client'";
 $bleuuserres = $bleuConn->query($bleusql);
 ?>
@@ -24,121 +24,82 @@ $bleuuserres = $bleuConn->query($bleusql);
 <style>
 body {
     font-family: "Georgia", serif;
-    background-color: #000;
-    color: #fff;
+    background-color: #ffffff;
+    color: #000;
     margin: 0;
     padding: 30px;
 }
-
-h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-    text-shadow: 2px 2px 3px rgba(255,255,255,0.2);
-}
-
-table {
-    width: 95%;
-    margin: 0 auto;
-    border-collapse: collapse;
-    background: #111;
-    box-shadow: 0 4px 10px rgba(255,255,255,0.2);
-    border: 2px solid #fff;
-}
-
-table thead {
-    background: #222;
-    color: #fff;
-}
-
-table th {
-    padding: 12px;
-    font-size: 1rem;
-    letter-spacing: 0.5px;
-    border-bottom: 3px solid #fff;
-}
-
-table td {
-    padding: 10px;
-    text-align: center;
-    color: #fff;
-    border-bottom: 1px solid #888;
-}
-
-table tbody tr:nth-child(even) {
-    background-color: #111;
-}
-
-table tbody tr:hover {
-    background-color: #333;
-    transform: scale(1.01);
-    transition: 0.2s ease;
-}
-
-.bleuappbtn {
-    background: #444;
-    color: #fff;
-    border: 2px solid #fff;
-    padding: 6px 12px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: 0.3s ease;
-}
-
-.bleuappbtn:hover {
-    background: #666;
-    transform: translateY(-2px);
-    box-shadow: 2px 2px 6px rgba(255,255,255,0.2);
-}
-
-table td[colspan] {
-    font-style: italic;
-    color: #ccc;
-    padding: 20px;
-}
+h1 { text-align: center; font-size: 2.5rem; margin-bottom: 20px; }
+table { width: 95%; margin: auto; border-collapse: collapse; border: 1px solid black; }
+thead { background: #5b5656; color: white; }
+th, td { padding: 12px; text-align: center; border-bottom: 1px solid black; }
+tr:hover { background: #e6e6e6; }
+.bleuappbtn { background: white; border: 2px solid black; padding: 6px 12px; cursor: pointer; }
+.bleuappbtn:hover { background: black; color: white; }
+.bleudenybtn { background: white; border: 2px solid red; color: red; padding: 6px 12px; cursor: pointer; }
+.bleudenybtn:hover { background: red; color: white; }
+.approved { color: green; font-weight: bold; }
+.pending { color: orange; font-weight: bold; }
 </style>
+<script>
+function denyClient(id, row) {
+    if(confirm("Are you sure you want to deny this client?")) {
+        // Redirect to delete script
+        window.location.href = "bleuAdminDenyClients.php?bleuid=" + id;
+    }
+}
+</script>
 </head>
 <body>
+
 <h1>View Clients</h1>
-<br><br>
 <table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>E-mail</th>
-            <th>Username</th>
-            <th>Type</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php
-    if ($bleuuserres && $bleuuserres->num_rows > 0) {
-        while ($bleuusers = $bleuuserres->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($bleuusers['id']) . "</td>";
-            echo "<td>" . htmlspecialchars($bleuusers['fname']) . "</td>";
-            echo "<td>" . htmlspecialchars($bleuusers['lname']) . "</td>";
-            echo "<td>" . htmlspecialchars($bleuusers['email']) . "</td>";
-            echo "<td>" . htmlspecialchars($bleuusers['username']) . "</td>";
-            echo "<td>Client</td>";
-            if ($bleuusers["status"] == 0)  {
-                // Only show approve button if not approved
-                echo "<td><button class='bleuappbtn' onclick=\"window.location.href='bleuAdminApproveClients.php?bleuid=" . $bleuusers['id'] . "'\">Approve</button></td>";
-            } else {
-                echo "<td>Approved</td>";
-            }
-            echo "</tr>";
+<thead>
+<tr>
+    <th>ID</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Email</th>
+    <th>Username</th>
+    <th>Type</th>
+    <th>Status</th>
+</tr>
+</thead>
+<tbody>
+<?php
+if ($bleuuserres && $bleuuserres->num_rows > 0) {
+    while ($u = $bleuuserres->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($u['id']) . "</td>";
+        echo "<td>" . htmlspecialchars($u['fname']) . "</td>";
+        echo "<td>" . htmlspecialchars($u['lname']) . "</td>";
+        echo "<td>" . htmlspecialchars($u['email']) . "</td>";
+        echo "<td>" . htmlspecialchars($u['username']) . "</td>";
+        echo "<td>Client</td>";
+
+        if ($u["status"] == 0) {
+            echo "<td>
+                <span class='pending'>Pending</span><br><br>
+                <button class='bleuappbtn'
+                    onclick=\"location.href='bleuAdminApproveClients.php?bleuid={$u['id']}'\">
+                    Approve
+                </button>
+                <button class='bleudenybtn'
+                    onclick=\"denyClient({$u['id']}, this)\">
+                    Deny
+                </button>
+            </td>";
+        } else {
+            echo "<td class='approved'>Approved</td>";
         }
-    } else {
-        echo "<tr><td colspan='7'>No clients found.</td></tr>";
+
+        echo "</tr>";
     }
-    ?>
-    </tbody>
+} else {
+    echo "<tr><td colspan='7'>No clients found.</td></tr>";
+}
+?>
+</tbody>
 </table>
 </body>
 </html>
