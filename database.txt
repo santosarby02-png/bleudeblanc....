@@ -50,3 +50,6 @@ CREATE TABLE users (
 -- password: Admin123 (HASH THIS IN PRODUCTION)
 INSERT INTO users (username, password, role, fname, lname, email, status)
 VALUES ('admin', 'Admin123', 'admin', 'Admin', 'User', 'admin@example.com', 1);
+======
+ALTER TABLE bleuproducts ADD COLUMN category ENUM('Men','Women') NOT NULL DEFAULT 'Men';
+
